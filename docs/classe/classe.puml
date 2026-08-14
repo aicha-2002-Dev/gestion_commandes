@@ -1,0 +1,107 @@
+@startuml classes_storemanager_pro
+skinparam classAttributeIconSize 0
+
+
+enum Role {
+  ADMIN
+  VENTE
+  STOCK
+  INVENTAIRE
+}
+
+
+class Utilisateur {
+  -id : int
+  -nom : string
+  -email : string
+  -motDePasse : string
+  -role : Role
+}
+
+class Produit {
+  -id : int
+  -nom : string
+  -prixVente : float
+  -quantiteStock : int
+}
+
+class Client {
+  -id : int
+  -prenom : string
+  -nom : string
+  -telephone : string
+  -email : string
+  -limiteCredit : float
+}
+
+class Fournisseur {
+  -id : int
+  -nom : string
+  -telephone : string
+  -adresse : string
+  -email : string
+}
+
+class Commande {
+  -id : int
+  -dateCommande : DateTime
+  -montantTotal : float
+  -montantVerse : float
+  -modeReglement : string
+  -statut : string 
+}
+
+
+class LigneCommande {
+  -id : int
+  -quantite : int
+  -prixUnitaire : float
+}
+
+class Dette {
+  -id : int
+  -montantInitial : float
+  -montantRestant : float
+  -dateCreation : DateTime
+  -statut : string 
+}
+
+class Paiement {
+  -id : int
+  -montant : float
+  -modePaiement : string
+  -datePaiement : DateTime
+}
+
+class Approvisionnement {
+  -id : int
+  -refBL : string
+  -dateReception : DateTime
+  -statut : string 
+}
+
+class LigneApprovisionnement {
+  -id : int
+  -quantiteCommandee : int
+  -quantiteLivree : int
+  -coutUnitaire : float
+}
+
+
+Client "1" -- "0..*" Commande 
+
+Commande "1" -- "1..*" LigneCommande 
+LigneCommande "0...*" --> "1" Produit 
+
+Commande "1" --> "0..1" Dette 
+
+Dette "1" -- "1" Paiement 
+
+Fournisseur "1" -- "0..*" Approvisionnement 
+
+Approvisionnement "1" -- "1..*" LigneApprovisionnement 
+LigneApprovisionnement "0...*" --> "1" Produit 
+
+Utilisateur --> Role 
+
+@enduml

@@ -1,0 +1,114 @@
+@startuml usecase
+left to right direction
+actor "admin" as admin
+
+rectangle "dashboard" {
+
+    usecase "Se connecter" as sc
+    usecase "infos ventes" as iv 
+    usecase "infos dettes" as id 
+    usecase "infos appro" as ia 
+    usecase "tableau de bord" as tb 
+    usecase "infos produits et tiers" as ip 
+
+    usecase "voir statistiques" as vs 
+    usecase "voir tableau 1" as vt1
+    usecase "voir tableau 2" as vt2
+    usecase "approvisionner produit" as ap
+     usecase "valider bl" as vbl
+     usecase "voir dettes" as vd
+     usecase "voir remboursements" as vr 
+     usecase "voir details" as vd
+     usecase "tout payer" as tp 
+
+
+
+    usecase "voir ventes recentes" as vvr
+    usecase "voir dettes du jour " as vdj
+    usecase "voir ruptures et alertes" as vra
+
+    usecase "voir livraison du jour" as vlj
+    usecase "lister clients debiteurs " as lcd
+    usecase "voir soldes fournisseurs" as vsf
+  
+}
+
+
+
+
+admin-> tb
+admin-> iv 
+admin-> ia
+admin-> ip 
+
+
+
+
+
+
+tb ..> sc:<<include>>
+iv ..> sc:<<include>>
+ia ..> sc:<<include>>
+ip ..> sc:<<include>>
+
+
+
+
+
+tb ..> vs:<<include>>
+tb ..> vt1:<<include>>
+tb ..> vt2:<<include>>
+
+tp <.. vsf:<<extends>>
+vd <..vsf:<<extends>>
+
+
+
+
+vvr <.. vt1:<<extend>>
+vdj <.. vt1:<<extend>>
+vra <.. vt1:<<extend>>
+
+vra <.. ap:<<extend>>
+ap <.. vbl:<<extend>>
+
+vr <.. lcd:<<extend>>
+
+
+
+
+
+
+vlj <.. vt2:<<extend>>
+lcd <.. vt2:<<extend>>
+vsf <.. vt2:<<extend>>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'VI1 <.. LVR:<<extend>>
+
+
+
+
+
+
+
+
+'VI2 ..> SC:<<include>>
+
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml GestionDettes
+
+left to right direction
+
+actor "Gerant Dette" as GD
+
+rectangle "Admin Boutique GestionDettes" {
+
+    usecase "Lister stats" as ls
+    usecase "Lister dette active" as lda
+
+    usecase "Lister article" as la
+    usecase "Lister paiement" as lp
+    usecase "Rembourser dette" as rd
+
+    usecase "Sélectionner mode paiement" as smp
+    usecase "Ajouter montant" as am
+
+    usecase "se connecter" as sc
+
+}
+
+GD --> ls
+GD --> lda
+
+ls --> sc
+lda --> sc
+
+lda <--  la : <<extend>>
+lda <-- lp : <<extend>>
+lda <-- rd : <<extend>>
+
+rd ..> smp : <<include>>
+rd ..> am : <<include>>
+
+
+@enduml

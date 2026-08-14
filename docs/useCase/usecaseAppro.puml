@@ -1,0 +1,27 @@
+@startuml approvisionnement
+
+left to right direction
+actor Admin as AD
+rectangle "MENU APPRO"{
+    usecase "gerer approvisionnement"  as GA
+    usecase "Cout Total Entres"  as CTE
+    usecase "Bons de Reception" as BR
+    usecase "Fournisseurs Actifs" as FA
+    usecase "Lister Bordereaux Livraisons" as BL
+    usecase "lignes" as L
+    usecase "receptionner" as R
+    usecase "Se connecter" as SC
+}
+
+AD --> GA
+A ..> CTE:<<include>>
+A ..> BR:<<include>>
+A ..> FA:<<include>>
+A ..> BL:<<include>>
+A ..> SC:<<include>>
+
+
+BL <..L:<<extend>>
+BL <..R:<<extend>>
+
+@enduml

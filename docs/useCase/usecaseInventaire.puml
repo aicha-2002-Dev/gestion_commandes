@@ -1,0 +1,39 @@
+@startuml UseCase
+left to right direction 
+
+actor "inventaire" as iventaire
+
+
+rectangle "inventaire"{
+    usecase "voir statistique inventaire" as vsi 
+    usecase "enregistrer produit" as ep 
+    usecase "voir catalogue Courant" as vcc
+    usecase "enregistrer client" as ec 
+    usecase "voir repertoire client" as vrc
+    usecase "enregistrer fournisseur" as ef 
+    usecase "voir repertoire fournisseur" as vrf
+
+
+
+
+
+}
+
+
+iventaire ->ep    
+iventaire ->ef    
+iventaire ->ec     
+iventaire ->vsi
+
+ec ..> vrc: <<include>>
+ef ..> vrf: <<include>>
+ep ..> vcc: <<include>>
+
+
+
+
+
+
+
+
+@enduml

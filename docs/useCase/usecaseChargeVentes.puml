@@ -1,0 +1,51 @@
+@startuml
+
+left to right direction
+
+actor "Chargé de Vente" as vendeur
+
+rectangle "Ventes / POS" {
+
+    usecase "Enregistrer une vente" as UC_VENTE
+    usecase "Voir CA encaisse net" as UC_CA
+    usecase "Voir Encours clients total" as UC_ECT
+    usecase "Voir Commandes Enregistrees" as UC_CE
+
+
+
+
+    usecase "Sélectionner le client" as UC_CLIENT
+    usecase "Sélectionner un article" as UC_ARTICLE
+    
+    usecase "Ajouter au panier" as UC_PANIER
+    usecase "Valider la vente" as UC_VALIDER
+
+
+    usecase "Consulter le registre general" as UC_CONSULTER
+    usecase "Consulter les lignes d'une vente" as UC_LIGNES
+}
+
+
+vendeur --> UC_VENTE
+vendeur --> UC_CONSULTER
+vendeur --> UC_CA
+vendeur --> UC_CE
+vendeur --> UC_ECT
+
+
+
+
+
+UC_VENTE ..> UC_CLIENT : <<include>>
+UC_VENTE ..> UC_ARTICLE : <<include>>
+UC_VENTE ..> UC_PANIER : <<include>>
+
+
+UC_VENTE ..> UC_VALIDER : <<include>>
+
+
+
+
+UC_CONSULTER <.. UC_LIGNES : <<extends>>
+
+@enduml
