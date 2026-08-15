@@ -72,6 +72,15 @@ class Database
         return $resultat === false ? null : $resultat;
     }
 
+    public static function insert(string $sql, array $params = []): int
+{
+    $pdo = self::getInstance();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+    return (int) $pdo->lastInsertId();
+}
+
     
     public static function executeUpdate(string $sql, array $params = []): int
     {

@@ -41,6 +41,11 @@ class Client
         return $this->nom;
     }
 
+    public function getTelephone(): string
+    {
+        return $this->telephone;
+    }
+
     public function getNomComplet(): string
     {
         return "{$this->prenom} {$this->nom}";

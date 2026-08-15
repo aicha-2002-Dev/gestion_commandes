@@ -310,6 +310,22 @@ Le passage au SQL a également permis de préciser la gestion des approvisionnem
 # Difficultes et obstacles 
 * Nécessité de bien comprendre le rôle exact d'un Repository (couche de traduction entre SQL et objets PHP) pour éviter de mélanger logique métier et accès aux données — clarifié par la comparaison entre code "avec" et "sans" Repository.
   
+## VenteService (Vente POS & Transaction SQL)
+
+# Création de src/Repository/CommandeRepository.php (insertion de l'en-tête de commande et de ses lignes) et de src/Repository/DetteRepository.php (création d'une dette liée à une commande), nécessaires au bon fonctionnement de VenteService.
+
+* Création de src/Repository/CommandeRepository.php (insertion de l'en-tête de commande et de ses lignes) et de src/Repository/DetteRepository.php (création d'une dette liée à une commande), nécessaires au bon fonctionnement de VenteService.
+* Création de src/Service/VenteService.php avec la méthode validerVente(), qui orchestre une vente complète en 3 grandes étapes :
+* Vérifications en lecture seule avant toute écriture : existence du client, existence et disponibilité du stock pour chaque produit du panier, vérification de la limite de crédit via ClientRepository::peutAcheterACredit().
+* Construction en mémoire de l'objet Commande et de ses LigneCommande, avec calcul du montant total et du montant à crédit.
+* Bloc transactionnel (Database::beginTransaction() / commit() / rollBack()) : insertion de la commande et de ses lignes, décrémentation du stock de chaque produit concerné, création d'une dettesi le montant versé est inférieur au montant total.
+
+* Construction en mémoire de l'objet Commande et de ses LigneCommande, avec calcul du montant total et du montant à crédit.
+* Bloc transactionnel (Database::beginTransaction() / commit() / rollBack()) : insertion de la commande et de ses lignes, décrémentation du stock de chaque produit concerné, création d'une dette si le montant versé est inférieur au montant total.
+
+# Difficultés
+* Nécessité de bien réfléchir à l'ordre des opérations : les vérifications de lecture (stock, crédit client) doivent être faites avant l'ouverture de la transaction, pour éviter de bloquer inutilement des ressources en base sur une vente qui va de toute façon échouer.
+
 
 
   
