@@ -299,7 +299,19 @@ Le passage au SQL a également permis de préciser la gestion des approvisionnem
 * Hésitation sur la représentation du rôle utilisateur (role) : essai avec un enum PHP natif (enum Role) pour coller fidèlement au diagramme UML, puis retour en arrière vers un simple attribut string avec une constante ROLES_VALIDES et une vérification manuelle (in_array) — car Role n'était pas une classe ou une table à part entière dans la modélisation initiale, seulement un type ENUM de la colonne role en base de données.
 * Erreur de compilation PHP (Role introuvable) causée par un mélange entre l'ancienne version (enum Role) et la version revenue en arrière (string + constante) — corrigée en remplaçant entièrement le fichier Utilisateur.php par la version cohérente, et en supprimant le fichier Role.php devenu inutile.
   
+
+## Repositories (ProduitRepository.php, ClientRepository.php, FournisseurRepository.php) 
+
+# Création du dossier Repository avec les methodes communes à chaque classe : une méthode privée mapVersEntite() ( qui transforme une ligne SQL en objet PHP), findById(), findAll(), save() (INSERT si l'objet n'a pas encore d'id, UPDATE sinon), delete().
+* ProduitRepository : ajout de findEnStockFaible() pour lister les produits sous un seuil de stock donné.
+* ClientRepository : ajout de calculerDetteActuelle() (jointure SQL entre dette et commande pour sommer les dettes ouvertes d'un client) et de peutAcheterACredit()
+* FournisseurRepository : Repository simple, sans logique métier particulière, conforme à l'entité Fournisseur qui n'a pas de règle métier complexe.
   
+# Difficultes et obstacles 
+* Nécessité de bien comprendre le rôle exact d'un Repository (couche de traduction entre SQL et objets PHP) pour éviter de mélanger logique métier et accès aux données — clarifié par la comparaison entre code "avec" et "sans" Repository.
+  
+
+
   
 
 
