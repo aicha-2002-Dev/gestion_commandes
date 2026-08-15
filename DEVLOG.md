@@ -279,6 +279,27 @@ Le passage au SQL a également permis de préciser la gestion des approvisionnem
   * Hésitation entre une approche Singleton statique et une approche par injection de dépendances (classe instanciée une seule fois puis transmise aux Repositories) ; le choix du Singleton a finalement été retenu pour rester conforme à la consigne du planning.
   * Nécessité de bien distinguer self:: (accès statique, sans objet) de $this-> (accès à une instance) pour comprendre pourquoi Database.php n'utilise jamais $this.
 
+
+## Création des 10 entités POO du projet, à partir du diagramme de classes : Produit, Client, Fournisseur, Paiement, LigneCommande, Dette, Utilisateur, Approvisionnement, LigneApprovisionnement, Commande.
+
+## Encapsulation stricte : tous les attributs sont private, avec des getters et des setters contrôlés (aucun accès direct depuis l'extérieur).
+## Ajout des méthodes métier propres à chaque entité, en plus des simples getters/setters :
+  * Produit : decrementerStock(), incrementerStock(), calculerMontant(), estEnStockFaible().
+  * Client : getCreditDisponible(), 
+  * LigneCommande : calculerSousTotal().
+  * Dette : appliquerRemboursement() (met à jour automatiquement le statut à SOLDEE quand le     montant restant atteint zéro).
+  * Commande : ajouterLigne(), calculerMontantTotal(), calculerMontantRestantDu(), enregistrerVersement() (met à jour automatiquement le statut PAYEE/PARTIELLE).
+  * Approvisionnement : ajouterLigne(), estEntierementRecu(), actualiserStatut().
+  * LigneApprovisionnement : receptionner(), estEntierementLivree(), calculerCoutTotal().
+  * Utilisateur :aLeRole(), estAdmin().
+  
+
+## Difficultes et obstacles
+
+* Hésitation sur la représentation du rôle utilisateur (role) : essai avec un enum PHP natif (enum Role) pour coller fidèlement au diagramme UML, puis retour en arrière vers un simple attribut string avec une constante ROLES_VALIDES et une vérification manuelle (in_array) — car Role n'était pas une classe ou une table à part entière dans la modélisation initiale, seulement un type ENUM de la colonne role en base de données.
+* Erreur de compilation PHP (Role introuvable) causée par un mélange entre l'ancienne version (enum Role) et la version revenue en arrière (string + constante) — corrigée en remplaçant entièrement le fichier Utilisateur.php par la version cohérente, et en supprimant le fichier Role.php devenu inutile.
+  
+  
   
 
 
