@@ -1,4 +1,7 @@
 # DEVLOG — StoreManager
+# 📓 Journal de Développement (DEVLOG)
+**Nom & Prénom** : Aissatou Gueye  
+**Projet** : StoreManager Pro (ERP PHP/POO)  
 
 # 14/08/2026 — Modelisation
 
@@ -252,6 +255,35 @@ Le passage du diagramme de classes vers la base de données a permis de précise
 * La relation `LigneApprovisionnement — Produit` est représentée par `produit_id`.
 
 Le passage au SQL a également permis de préciser la gestion des approvisionnements avec la distinction entre `quantite_commandee` et `quantite_livree`.
+
+
+
+
+
+## Connexion a la base de donnees (Database Singleton)
+
+
+## Mise en place de la classe Database.php, chargée de fournir une connexion PDO unique à toute l'application.
+
+* Utilisation du pattern Singleton : une seule instance de connexion est créée et réutilisée     partout via Database::getInstance().
+* Le constructeur a ete rendu prive pour empêcher toute création ou duplication de la classe en dehors de getInstance().
+* La propriété $instance et les méthodes de connexion sont statiques (self::), puisque la classe n'est jamais instanciée avec new.
+* Mise en place d'un mécanisme de fallback automatique : la classe tente d'abord une connexion à PostgreSQL, et bascule automatiquement sur SQLite (erp.db) via un bloc try/catch si cette connexion échoue.
+* Activation explicite des clés étrangères pour la connexion SQLite avec PRAGMA foreign_keys = ON, désactivées par défaut sur ce moteur contrairement à PostgreSQL.
+* Ajout de méthodes utilitaires statiques pour simplifier l'accès aux données depuis les futurs Repositories :
+  * query() pour récupérer plusieurs lignes (SELECT)
+  * queryOne() pour récupérer une seule ligne
+  * executeUpdate() pour les mises à jour et suppressions (UPDATE/DELETE)
+  * beginTransaction(), commit(), rollBack() pour la gestion des transactions, nécessaires aux futures opérations de vente et d'approvisionnement.
+* Difficultés rencontrées
+  * Hésitation entre une approche Singleton statique et une approche par injection de dépendances (classe instanciée une seule fois puis transmise aux Repositories) ; le choix du Singleton a finalement été retenu pour rester conforme à la consigne du planning.
+  * Nécessité de bien distinguer self:: (accès statique, sans objet) de $this-> (accès à une instance) pour comprendre pourquoi Database.php n'utilise jamais $this.
+
+  
+
+
+
+
 
 
 
