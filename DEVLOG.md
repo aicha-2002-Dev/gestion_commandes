@@ -354,7 +354,11 @@ Le passage au SQL a également permis de préciser la gestion des approvisionnem
 # Difficultés et Obstacles
 * Confusion sur une variable soulignée en rouge par l'éditeur ($CaEncaisseNet avec majuscule au lieu de $caEncaisseNet) : sensibilité à la casse des noms de variables en PHP, corrigée en respectant exactement la casse définie dans le contrôleur.
 
+##  Dynamisation ##  Dynamisation de la vue Vente/POS
 
+* Ajout de CommandeRepository::findAllCommandesAvecClient() (jointure commande + client) pour lister toutes les commandes avec le nom et le téléphone du client associé, et de findLignesAvecProduit() pour récupérer les lignes détaillées d'une commande avec le nom du produit.
+* Mise à jour de POSController::afficherCaisse() pour transmettre la liste des commandes à la vue.
+* Remplacement du tableau statique "Registre Général des Ventes & Commandes" par une boucle foreach sur les vraies commandes.
 
-
-
+# Difficultés et Obstacles 
+* Confusion entre $commande (un simple tableau associatif provenant d'une ligne SQL, accédé avec $commande['id']) et $commandeRepo (l'objet CommandeRepository, dont les méthodes s'appellent avec ->) : une erreur $commande->findLignesAvecProduit() a été corrigée en $commandeRepo->findLignesAvecProduit().

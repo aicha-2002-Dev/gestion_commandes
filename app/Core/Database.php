@@ -33,7 +33,7 @@ class Database
         $dsn = "pgsql:host=localhost;port=5432;dbname=gest_commandes";
 
         return new PDO($dsn, 'postgres', 'mypostgres', [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_ERRMODE  => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ]);
     }
@@ -43,7 +43,7 @@ class Database
         $dbPath = __DIR__ . '/../../erp.db';
 
         $pdo = new PDO("sqlite:{$dbPath}", null, null, [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ]);
 

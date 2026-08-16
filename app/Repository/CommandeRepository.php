@@ -56,4 +56,24 @@ class CommandeRepository
         $ligne = Database::queryOne("SELECT COUNT(*) AS total FROM commandes");
         return (int) ($ligne['total'] ?? 0);
     }
+
+    public function findAllCommandeAvecClient(): array
+    {
+        return Database::query(
+            "SELECT c.*, cl.prenom AS client_prenom, cl.nom AS client_nom, cl.telephone AS client_telephone
+            FROM commandes c
+            JOIN clients cl ON cl.id = c.client_id
+            ORDER BY c.date_commande DESC"
+        );
+    }
+    public function findLignesAvecProduit(int $commandeId): array
+    {
+        return Database::query(
+            "SELECT lc.*, p.nom AS produit_nom
+            FROM ligne_commandes lc
+            JOIN produits p ON p.id = lc.produit_id
+            WHERE lc.commande_id = :commande_id",
+            ['commande_id' => $commandeId]
+        );
+    }
 }

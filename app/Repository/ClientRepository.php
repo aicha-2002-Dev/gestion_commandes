@@ -45,8 +45,8 @@ class ClientRepository
     {
         $ligne = Database::queryOne(
             "SELECT COALESCE(SUM(d.montant_restant), 0) AS total
-             FROM dette d
-             JOIN commande c ON c.id = d.commande_id
+             FROM dettes d
+             JOIN commandes c ON c.id = d.commande_id
              WHERE c.client_id = :client_id AND d.statut = 'OUVERTE'",
             ['client_id' => $client_id]
         );
@@ -54,11 +54,7 @@ class ClientRepository
         return (float) ($ligne['total'] ?? 0);
     }
 
-    /**
-     * Vérifie si un client peut effectuer un nouvel achat à crédit
-     * d'un certain montant, sans dépasser sa limite de crédit.
-     * Remplace l'ancienne méthode Client::peutAcheterACredit().
-     */
+   
     public function peutAcheterACredit(Client $client, float $montant): bool
     {
         $detteActuelle = $this->calculerDetteActuelle($client->getId());
@@ -92,7 +88,7 @@ class ClientRepository
         }
 
         Database::executeUpdate(
-            "UPDATE client SET prenom = :prenom, nom = :nom, telephone = :tel, email = :email, limite_credit = :credit
+            "UPDATE clients SET prenom = :prenom, nom = :nom, telephone = :tel, email = :email, limite_credit = :credit
              WHERE id = :id",
             [
                 'prenom' => $client->getPrenom(),
@@ -109,6 +105,6 @@ class ClientRepository
 
     public function delete(int $id): bool
     {
-        return Database::executeUpdate("DELETE FROM client WHERE id = :id", ['id' => $id]) > 0;
+        return Database::executeUpdate("DELETE FROM clients WHERE id = :id", ['id' => $id]) > 0;
     }
 }

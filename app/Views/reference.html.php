@@ -1277,17 +1277,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                                                            <tr>
-                                    <td style="font-weight: 700; color: var(--text-muted);">#CMD-4</td>
+                            <?php $commandes = $commandes ?? [];
+                                  foreach($commandes as $commande): 
+                            ?>
+                                <tr>
+                                    <td style="font-weight: 700; color: var(--text-muted);">#CMD-<?= $commande['id'] ?></td>
                                     <td style="font-weight: 700;">
-                                        Maimouna Diallo                                        <div style="font-size:11px; color:var(--text-muted); font-weight:normal;">Tél : 701122334</div>
+                                        <?= $nomClient ?>
+                                         <div style="font-size:11px; color:var(--text-muted); font-weight:normal;">
+                                        Tél : <?=  $commande['client_telephone'] ?></div>
                                     </td>
-                                    <td style="font-weight: 800; color: var(--accent);">15 000 F</td>
+                                    <td style="font-weight: 800; color: var(--accent);">1<?= $commande['montant_total'] ?>F</td>
                                     <td>
-                                                                                                                                    <span class="badge badge-danger">CRÉDIT TOTAL</span>
-                                                                                                                        </td>
+                                       <span class="badge badge-danger">CRÉDIT TOTAL</span>
+                                     </td>
                                     <td>
-                                        <button class="btn-quick-action" onclick="toggleDetails('order-details-4')">Lignes</button>
+                                        <button class="btn-quick-action" onclick="toggleDetails('<?= $detailsId ?>')">Lignes</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1304,150 +1309,22 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                                                                            <tr>
-                                                            <td>Paquet de sucre 1kg</td>
-                                                            <td>10</td>
-                                                            <td>1 500 F</td>
-                                                            <td style="font-weight: 700; color: var(--accent);">15 000 F</td>
-                                                        </tr>
-                                                                                                    </tbody>
+
+                                          <?php foreach ($commandeRepo->findLignesAvecProduit($commande['id']) as $ligne): ?>
+                                                <tr>
+                                                     <td><?= $ligne['produit_nom']  ?></td>
+                                                     <td><?= $ligne['quantite'] ?></td>
+                                                      <td><?= $ligne['prix_unitaire'] ?> F</td>
+                                                      <td style="font-weight: 700; color: var(--accent);"><?= $ligne['quantite'] * $ligne['prix_unitaire'] ?>F</td>
+                                                </tr>
+                                                <?php endforeach; ?>
+                                                 </tbody>
                                             </table>
                                         </div>
                                     </td>
                                 </tr>
-                                                            <tr>
-                                    <td style="font-weight: 700; color: var(--text-muted);">#CMD-3</td>
-                                    <td style="font-weight: 700;">
-                                        Moussa Sarr                                        <div style="font-size:11px; color:var(--text-muted); font-weight:normal;">Tél : 769876543</div>
-                                    </td>
-                                    <td style="font-weight: 800; color: var(--accent);">74 000 F</td>
-                                    <td>
-                                                                                                                                    <span class="badge badge-warning">AVANCE (Credit)</span>
-                                                                                                                        </td>
-                                    <td>
-                                        <button class="btn-quick-action" onclick="toggleDetails('order-details-3')">Lignes</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" style="padding: 0; border: none;">
-                                        <div class="details-drawer" id="order-details-3">
-                                            <div style="font-weight: 700; font-size: 12px; color: var(--accent); margin-bottom: 8px;">Détails Facture :</div>
-                                            <table class="debt-table" style="font-size: 11px;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Produit</th>
-                                                        <th>Qté</th>
-                                                        <th>P.U.</th>
-                                                        <th>Sous-total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                                                                            <tr>
-                                                            <td>Sac de riz 50kg</td>
-                                                            <td>2</td>
-                                                            <td>25 000 F</td>
-                                                            <td style="font-weight: 700; color: var(--accent);">50 000 F</td>
-                                                        </tr>
-                                                                                                            <tr>
-                                                            <td>Carton de savon</td>
-                                                            <td>2</td>
-                                                            <td>12 000 F</td>
-                                                            <td style="font-weight: 700; color: var(--accent);">24 000 F</td>
-                                                        </tr>
-                                                                                                    </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
-                                                            <tr>
-                                    <td style="font-weight: 700; color: var(--text-muted);">#CMD-2</td>
-                                    <td style="font-weight: 700;">
-                                        Fama Diouf                                        <div style="font-size:11px; color:var(--text-muted); font-weight:normal;">Tél : 781234567</div>
-                                    </td>
-                                    <td style="font-weight: 800; color: var(--accent);">44 000 F</td>
-                                    <td>
-                                                                                                                                    <span class="badge badge-warning">AVANCE (Credit)</span>
-                                                                                                                        </td>
-                                    <td>
-                                        <button class="btn-quick-action" onclick="toggleDetails('order-details-2')">Lignes</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" style="padding: 0; border: none;">
-                                        <div class="details-drawer" id="order-details-2">
-                                            <div style="font-weight: 700; font-size: 12px; color: var(--accent); margin-bottom: 8px;">Détails Facture :</div>
-                                            <table class="debt-table" style="font-size: 11px;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Produit</th>
-                                                        <th>Qté</th>
-                                                        <th>P.U.</th>
-                                                        <th>Sous-total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                                                                            <tr>
-                                                            <td>Bidon d&#039;huile 5L</td>
-                                                            <td>3</td>
-                                                            <td>8 000 F</td>
-                                                            <td style="font-weight: 700; color: var(--accent);">24 000 F</td>
-                                                        </tr>
-                                                                                                            <tr>
-                                                            <td>Paquet de sucre 1kg</td>
-                                                            <td>13</td>
-                                                            <td>1 500 F</td>
-                                                            <td style="font-weight: 700; color: var(--accent);">19 500 F</td>
-                                                        </tr>
-                                                                                                    </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
-                                                            <tr>
-                                    <td style="font-weight: 700; color: var(--text-muted);">#CMD-1</td>
-                                    <td style="font-weight: 700;">
-                                        Abdou Ndiaye                                        <div style="font-size:11px; color:var(--text-muted); font-weight:normal;">Tél : 776543210</div>
-                                    </td>
-                                    <td style="font-weight: 800; color: var(--accent);">58 000 F</td>
-                                    <td>
-                                                                                    <span class="badge badge-success">COMPTANT (Wave)</span>
-                                                                            </td>
-                                    <td>
-                                        <button class="btn-quick-action" onclick="toggleDetails('order-details-1')">Lignes</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" style="padding: 0; border: none;">
-                                        <div class="details-drawer" id="order-details-1">
-                                            <div style="font-weight: 700; font-size: 12px; color: var(--accent); margin-bottom: 8px;">Détails Facture :</div>
-                                            <table class="debt-table" style="font-size: 11px;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Produit</th>
-                                                        <th>Qté</th>
-                                                        <th>P.U.</th>
-                                                        <th>Sous-total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                                                                            <tr>
-                                                            <td>Sac de riz 50kg</td>
-                                                            <td>2</td>
-                                                            <td>25 000 F</td>
-                                                            <td style="font-weight: 700; color: var(--accent);">50 000 F</td>
-                                                        </tr>
-                                                                                                            <tr>
-                                                            <td>Bidon d&#039;huile 5L</td>
-                                                            <td>1</td>
-                                                            <td>8 000 F</td>
-                                                            <td style="font-weight: 700; color: var(--accent);">8 000 F</td>
-                                                        </tr>
-                                                                                                    </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
-                                                    </tbody>
+                               <?php endforeach; ?>
+                        </tbody>
                     </table>
                 </div>
             </div>

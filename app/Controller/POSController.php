@@ -35,6 +35,8 @@ class POSController
         $caEncaisseNet = $commandeRepo->calculerCaEncaisseNet();
         $encoursClientsTotal = $debtServ->getEncoursTotal();
         $nombreCommandesEnreg = $commandeRepo->compterCommandes();
+        $commandes = $commandeRepo->findAllCommandeAvecClient();
+
 
         $erreur = $_SESSION['erreur_vente'] ?? null;
         unset($_SESSION['erreur_vente']);
