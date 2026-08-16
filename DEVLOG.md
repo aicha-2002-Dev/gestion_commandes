@@ -335,8 +335,14 @@ Le passage au SQL a également permis de préciser la gestion des approvisionnem
 * Erreur initiale Failed opening required '.../Core/Routeur.php' au démarrage : chemin de require_once dans index.php incohérent avec l'arborescence réelle du projet (dossier app/ non pris en compte dans un premier temps).
 * Bonne pratique retenue : lors d'un bug de chemin de fichier silencieux, un var_dump() suivi d'un die permet de visualiser immédiatement l'erreur  réellement généré par PHP
 
+## Gestion des Dettes (DetteRepository, DebtService)
 
+* Complétion de DetteRepository : ajout de findById(), findByCommandeId(), findDettesNonS(), calculerEncoursTotal() (somme des montants restants des dettes non soldees) et mettreAJour() (mise à jour du montant restant et du statut après un remboursement).
+* Création de /Service/DebtService.php avec la méthode enregistrerPaiement(), qui enregistre un remboursement de dette en 3 étapes : vérification de l'existence et du statut de la dette, application de la règle métier sur l'entité (Dette::appliquerRemboursement()), puis persistance dans une transaction (insertion du paiement + mise à jour de la dette).
+* Ajout de méthodes de consultation sur DebtService : listerDettesNonS(), getEncoursTotal(), getTotalRembourse().
 
+# Difficultés et Obstacles
+* Clarification nécessaire sur le rôle exact de Dette::estSoldee() : confirmation que cette méthode vit sur l'entité (simple lecture du statut déjà en mémoire), et non sur le Service, car elle ne nécessite aucun accès base de données.
   
 
 

@@ -60,6 +60,11 @@ class Dette
         return $this->statut;
     }
 
+    public function estSoldee(): bool
+    {
+        return $this->statut === 'SOLDEE';
+    }
+
     public function appliquerRemboursement(float $montant): void
     {
         if ($montant <= 0) {
