@@ -42,6 +42,18 @@ class CommandeRepository
 
     public function findById(int $id): ?array
     {
-        return Database::queryOne("SELECT * FROM commande WHERE id = :id", ['id' => $id]);
+        return Database::queryOne("SELECT * FROM commandes WHERE id = :id", ['id' => $id]);
+    }
+
+    public function calculerCaEncaisseNet(): float
+    {
+        $ligne = Database::queryOne("SELECT COALESCE(SUM(montant_verse), 0) AS total FROM commandes");
+        return (float) ($ligne['total'] ?? 0);
+    }
+
+    public function compterCommandes(): int
+    {
+        $ligne = Database::queryOne("SELECT COUNT(*) AS total FROM commandes");
+        return (int) ($ligne['total'] ?? 0);
     }
 }

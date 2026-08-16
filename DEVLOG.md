@@ -1,5 +1,5 @@
 # DEVLOG — StoreManager
-# 📓 Journal de Développement (DEVLOG)
+
 **Nom & Prénom** : Aissatou Gueye  
 **Projet** : StoreManager Pro (ERP PHP/POO)  
 
@@ -344,8 +344,15 @@ Le passage au SQL a également permis de préciser la gestion des approvisionnem
 # Difficultés et Obstacles
 * Clarification nécessaire sur le rôle exact de Dette::estSoldee() : confirmation que cette méthode vit sur l'entité (simple lecture du statut déjà en mémoire), et non sur le Service, car elle ne nécessite aucun accès base de données.
   
+##  Dynamisation de la vue Vente/POS
 
-
+* Adaptation de la vue  pour la partie caisse (view-pos) : remplacement des données codées en dur (liste de clients, liste de produits, cartes de statistiques) par des boucles PHP alimentées par ProduitRepository::findAll() et ClientRepository::findAll().
+* Correction du formulaire de vente : passage de method="GET" action="#" (mode démonstration avec alert()) à method="POST" action="/pos/valider", pour soumettre réellement vers POSController::validerVente().
+* Ajout de deux nouvelles méthodes à CommandeRepository pour dynamiser les cartes de statistiques du POS : calculerCaEncaisseNet() (somme des montants versés sur les commandes) et compterCommandes() (nombre total de commandes) ; réutilisation de DebtService::getEncoursTotal() déjà existante pour la carte "Encours Client Total".
+* Mise à jour de POSController::afficherCaisse() pour calculer ces trois valeurs et les transmettre à la vue.
+  
+# Difficultés et Obstacles
+* Confusion sur une variable soulignée en rouge par l'éditeur ($CaEncaisseNet avec majuscule au lieu de $caEncaisseNet) : sensibilité à la casse des noms de variables en PHP, corrigée en respectant exactement la casse définie dans le contrôleur.
 
 
 

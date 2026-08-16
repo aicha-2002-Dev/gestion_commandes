@@ -1,8 +1,11 @@
 <?php
 
-require_once dirname(__DIR__) . '/Services/VenteService.php';
+require_once dirname(__DIR__). '/Services/VenteService.php';
 require_once dirname(__DIR__). '/Repository/ProduitRepository.php';
 require_once dirname(__DIR__). '/Repository/ClientRepository.php';
+
+require_once dirname(__DIR__). '/Repository/CommandeRepository.php';
+require_once dirname(__DIR__). '/Services/DebtService.php';
 
 class POSController
 {
@@ -26,15 +29,22 @@ class POSController
         $produits = $this->produitRepository->findAll();
         $clients  = $this->clientRepository->findAll();
 
+        $commandeRepo = new CommandeRepository;
+        $debtServ = new DebtService;
+
+        $caEncaisseNet = $commandeRepo->calculerCaEncaisseNet();
+        $encoursClientsTotal = $debtServ->getEncoursTotal();
+        $nombreCommandesEnreg = $commandeRepo->compterCommandes();
+
         $erreur = $_SESSION['erreur_vente'] ?? null;
         unset($_SESSION['erreur_vente']);
 
         
-        require dirname(__DIR__) . '/Views/vue.html.php';
+        require dirname(__DIR__) . '/Views/reference.html.php';
     }
 
     /**
-     * Traite la soumission du formulaire de vente (POST).
+     *  Traite la soumission du formulaire de vente (POST).
      * Construit le panier à partir des données du formulaire, puis
      * délègue toute la logique métier à VenteService.
      */
@@ -99,4 +109,6 @@ class POSController
 
         return $panier;
     }
+
+
 }
