@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__DIR__ ). '/Core/Database.php';
-require_once dirname(__DIR__ ) .'/Entity/Produit.php';
+require_once dirname(__DIR__ ) .'/Entite/Produit.php';
 
 class ProduitRepository
 {
@@ -13,7 +13,7 @@ class ProduitRepository
     {
         return new Produit(
             nom: $ligne['nom'],
-            prix: (float) $ligne['prix_vente'],
+            prix: (float) $ligne['prix'],
             quantite_stock: (int) $ligne['quantite_stock'],
             id: (int) $ligne['id']
         );
@@ -22,7 +22,7 @@ class ProduitRepository
     public function findById(int $id): ?Produit
     {
         $ligne = Database::queryOne(
-            "SELECT * FROM produit WHERE id = :id",
+            "SELECT * FROM produits WHERE id = :id",
             ['id' => $id]
         );
 
@@ -34,7 +34,7 @@ class ProduitRepository
      */
     public function findAll(): array
     {
-        $lignes = Database::query("SELECT * FROM produit ORDER BY nom ASC");
+        $lignes = Database::query("SELECT * FROM produits ");
 
         return array_map(fn(array $ligne) => $this->mapToEntity($ligne), $lignes);
     }
@@ -45,7 +45,7 @@ class ProduitRepository
     public function findEnStockFaible(int $seuil = 10): array
     {
         $lignes = Database::query(
-            "SELECT * FROM produit WHERE quantite_stock <= :seuil ORDER BY quantite_stock ASC",
+            "SELECT * FROM produits WHERE quantite_stock <= :seuil ORDER BY quantite_stock ASC",
             ['seuil' => $seuil]
         );
 
@@ -60,7 +60,7 @@ class ProduitRepository
     {
         if ($produit->getId() === null) {
             $nouvelId = Database::insert(
-                "INSERT INTO produit (nom, prix_vente, quantite_stock) VALUES (:nom, :prix, :qte)",
+                "INSERT INTO produits (nom, prix, quantite_stock) VALUES (:nom, :prix, :qte)",
                 [
                     'nom'  => $produit->getNom(),
                     'prix' => $produit->getPrix(),
@@ -77,7 +77,7 @@ class ProduitRepository
         }
 
         Database::executeUpdate(
-            "UPDATE produit SET nom = :nom, prix_vente = :prix, quantite_stock = :qte WHERE id = :id",
+            "UPDATE produits SET nom = :nom, prix = :prix, quantite_stock = :qte WHERE id = :id",
             [
                 'nom'  => $produit->getNom(),
                 'prix' => $produit->getPrix(),

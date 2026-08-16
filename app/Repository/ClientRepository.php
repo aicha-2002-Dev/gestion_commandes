@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__DIR__) . '/Core/Database.php';
-require_once dirname(__DIR__) . '/Entity/Client.php';
+require_once dirname(__DIR__) . '/Entite/Client.php';
 
 class ClientRepository
 {
@@ -20,7 +20,7 @@ class ClientRepository
 
     public function findById(int $id): ?Client
     {
-        $ligne = Database::queryOne("SELECT * FROM client WHERE id = :id", ['id' => $id]);
+        $ligne = Database::queryOne("SELECT * FROM clients WHERE id = :id", ['id' => $id]);
 
         return $ligne === null ? null : $this->mapToEntity($ligne);
     }
@@ -30,7 +30,7 @@ class ClientRepository
      */
     public function findAll(): array
     {
-        $lignes = Database::query("SELECT * FROM client ORDER BY nom ASC, prenom ASC");
+        $lignes = Database::query("SELECT * FROM clients ORDER BY nom ASC, prenom ASC");
 
         return array_map(fn(array $ligne) => $this->mapToEntity($ligne), $lignes);
     }
@@ -41,14 +41,14 @@ class ClientRepository
      * La dette n'étant plus stockée sur l'entité Client, ce calcul se
      * fait ici via une jointure SQL avec commande et dette.
      */
-    public function calculerDetteActuelle(int $clientId): float
+    public function calculerDetteActuelle(int $client_id): float
     {
         $ligne = Database::queryOne(
             "SELECT COALESCE(SUM(d.montant_restant), 0) AS total
              FROM dette d
              JOIN commande c ON c.id = d.commande_id
              WHERE c.client_id = :client_id AND d.statut = 'OUVERTE'",
-            ['client_id' => $clientId]
+            ['client_id' => $client_id]
         );
 
         return (float) ($ligne['total'] ?? 0);
@@ -70,7 +70,7 @@ class ClientRepository
     {
         if ($client->getId() === null) {
             $nouvelId = Database::insert(
-                "INSERT INTO client (prenom, nom, telephone, email, limite_credit)
+                "INSERT INTO clients (prenom, nom, telephone, email, limite_credit)
                  VALUES (:prenom, :nom, :tel, :email, :credit)",
                 [
                     'prenom' => $client->getPrenom(),

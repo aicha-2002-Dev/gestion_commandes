@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../Core/Database.php';
-require_once __DIR__ . '/../Model/Entity/Commande.php';
-require_once __DIR__ . '/../Model/Entity/LigneCommande.php';
+require_once dirname(__DIR__) . '/Core/Database.php';
+require_once dirname(__DIR__)  . '/Entite/Commande.php';
+require_once dirname(__DIR__)  . '/Entite/LigneCommande.php';
 
 class CommandeRepository
 {

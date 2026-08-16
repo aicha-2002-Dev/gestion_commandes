@@ -1,11 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../Repository/ProduitRepository.php';
-require_once __DIR__ . '/../Repository/ClientRepository.php';
-require_once __DIR__ . '/../Repository/CommandeRepository.php';
-require_once __DIR__ . '/../Repository/DetteRepository.php';
-require_once __DIR__ . '/../Model/Entity/Commande.php';
-require_once __DIR__ . '/../Model/Entity/LigneCommande.php';
+require_once dirname(__DIR__)  . '/Repository/ProduitRepository.php';
+require_once dirname(__DIR__)  . '/Repository/ClientRepository.php';
+require_once dirname(__DIR__)  . '/Repository/CommandeRepository.php';
+require_once dirname(__DIR__)  . '/Repository/DetteRepository.php';
+require_once dirname(__DIR__)  . '/Entite/Commande.php';
+require_once dirname(__DIR__)  . '//Entite/LigneCommande.php';
 
 class VenteService
 {

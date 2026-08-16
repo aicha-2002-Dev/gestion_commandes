@@ -326,6 +326,15 @@ Le passage au SQL a également permis de préciser la gestion des approvisionnem
 # Difficultés
 * Nécessité de bien réfléchir à l'ordre des opérations : les vérifications de lecture (stock, crédit client) doivent être faites avant l'ouverture de la transaction, pour éviter de bloquer inutilement des ressources en base sur une vente qui va de toute façon échouer.
 
+# Routeur
+* classe Routeur avec une propriété private array $routes et une méthode distribuer(), qui reprend exactement la même logique (lecture de l'URI, recherche de la route correspondante avec repli sur /, vérification de l'existence du fichier du contrôleur, exécution de l'action).
+* Mise en place du point d'entrée unique public/index.php, qui charge les fichiers nécessaires (Controller, Core/Routeur.php) puis délègue tout le traitement à Routeur::distribuer().
+
+# Difficultés et Obstacles
+
+* Erreur initiale Failed opening required '.../Core/Routeur.php' au démarrage : chemin de require_once dans index.php incohérent avec l'arborescence réelle du projet (dossier app/ non pris en compte dans un premier temps).
+* Bonne pratique retenue : lors d'un bug de chemin de fichier silencieux, un var_dump() suivi d'un die permet de visualiser immédiatement l'erreur  réellement généré par PHP
+
 
 
   

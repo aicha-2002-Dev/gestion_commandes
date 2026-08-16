@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../Core/Database.php';
-require_once __DIR__ . '/../Model/Entity/Fournisseur.php';
+require_once dirname(__DIR__)  . '/Core/Database.php';
+require_once dirname(__DIR__)  . '/Entite/Fournisseur.php';
 
 class FournisseurRepository
 {
@@ -19,7 +19,7 @@ class FournisseurRepository
 
     public function findById(int $id): ?Fournisseur
     {
-        $ligne = Database::queryOne("SELECT * FROM fournisseur WHERE id = :id", ['id' => $id]);
+        $ligne = Database::queryOne("SELECT * FROM fournisseurs WHERE id = :id", ['id' => $id]);
 
         return $ligne === null ? null : $this->mapToEntity($ligne);
     }
@@ -29,7 +29,7 @@ class FournisseurRepository
      */
     public function findAll(): array
     {
-        $lignes = Database::query("SELECT * FROM fournisseur ORDER BY nom ASC");
+        $lignes = Database::query("SELECT * FROM fournisseurs ORDER BY nom ASC");
 
         return array_map(fn(array $ligne) => $this->mapToEntity($ligne), $lignes);
     }
@@ -38,7 +38,7 @@ class FournisseurRepository
     {
         if ($fournisseur->getId() === null) {
             $nouvelId = Database::insert(
-                "INSERT INTO fournisseur (nom, telephone, adresse, email) VALUES (:nom, :tel, :adresse, :email)",
+                "INSERT INTO fournisseurs (nom, telephone, adresse, email) VALUES (:nom, :tel, :adresse, :email)",
                 [
                     'nom'     => $fournisseur->getNom(),
                     'tel'     => $fournisseur->getTelephone(),
@@ -57,7 +57,7 @@ class FournisseurRepository
         }
 
         Database::executeUpdate(
-            "UPDATE fournisseur SET nom = :nom, telephone = :tel, adresse = :adresse, email = :email WHERE id = :id",
+            "UPDATE fournisseurs SET nom = :nom, telephone = :tel, adresse = :adresse, email = :email WHERE id = :id",
             [
                 'nom'     => $fournisseur->getNom(),
                 'tel'     => $fournisseur->getTelephone(),
@@ -72,6 +72,6 @@ class FournisseurRepository
 
     public function delete(int $id): bool
     {
-        return Database::executeUpdate("DELETE FROM fournisseur WHERE id = :id", ['id' => $id]) > 0;
+        return Database::executeUpdate("DELETE FROM fournisseurs WHERE id = :id", ['id' => $id]) > 0;
     }
 }
