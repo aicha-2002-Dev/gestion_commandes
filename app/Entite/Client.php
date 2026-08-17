@@ -66,10 +66,4 @@ class Client
         return $this->limite_credit;
     }
 
-  
-   
-
-    
-
-
 }
